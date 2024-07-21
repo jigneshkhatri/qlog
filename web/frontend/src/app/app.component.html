@@ -1,0 +1,29 @@
+<div style="width: 100%;">
+  <input type="text" placeholder="Topic name" [(ngModel)]="topicName"/>
+  <button (click)="start()">Start</button>
+  <button (click)="stop()">Stop</button>
+  <label style="margin-left: 15px">{{logs.length}}</label>
+</div>
+
+<div style="width: 100%;">
+  <table style="width: 100%; display: table;" border="1px">
+    <thead>
+      <th>Time</th>
+      <th>Level</th>
+      <th>Message</th>
+      <th>Class name</th>
+      <th>Method name</th>
+      <th>Line #</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let log of logs">
+        <td>{{log.logTime}}</td>
+        <td>{{log.level}}</td>
+        <td><pre>{{log.message}}</pre></td>
+        <td>{{log.className}}</td>
+        <td>{{log.methodName}}</td>
+        <td>{{log.lineNumber}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
