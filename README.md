@@ -26,3 +26,5 @@ Qlog is a cloud-based log explorer that can be effortlessly deployed on-premises
 - Streamlining the APIs and making up a decent UI.
 - Adding an authentication layer in the API.
 - Containerize the web components, and kafka and spin them up with very ease using the single `docker-compose.yaml`.
+- Documenting the code.
+- Including README for each of the component.
