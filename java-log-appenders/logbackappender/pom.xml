@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>in.quallit.qlog</groupId>
+  <artifactId>logbackappender</artifactId>
+  <version>0.0.5</version>
+  <packaging>jar</packaging>
+
+  <name>logbackappender</name>
+  <url>http://maven.apache.org</url>
+
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+        <repository>
+            <id>local</id>
+            <url>file://${user.home}/.m2/repository</url>
+        </repository>
+    </repositories>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <ch.qos.logback.classic.version>1.5.6</ch.qos.logback.classic.version>
+    <in.quallit.qlog.logtransporter.version>0.0.4</in.quallit.qlog.logtransporter.version>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+  </properties>
+
+  <dependencies>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${ch.qos.logback.classic.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>in.quallit.qlog</groupId>
+          <artifactId>logtransporter</artifactId>
+          <version>${in.quallit.qlog.logtransporter.version}</version>
+          <exclusions>
+              <exclusion>
+                  <groupId>ch.qos.logback</groupId>
+                  <artifactId>*</artifactId>
+              </exclusion>
+          </exclusions>
+      </dependency>
+  </dependencies>
+</project>
