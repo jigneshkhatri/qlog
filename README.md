@@ -1,7 +1,7 @@
 # Qlog
 Qlog is a cloud-based log explorer that can be effortlessly deployed on-premises and is compatible with a wide range of loggers across different tech stacks. This solution will simplify and unify log searches, enabling developers to access logs from multiple servers (staging, production, etc.) without direct server access, hassle-free.
 
-## How it does work?
+## How does it work?
 - Qlog uses a Kafka queue in its centre to gather the logs from different appenders and route them to MongoDB.
   - The custom appenders are created for most of the loggers, which can be configured in our applications. These appenders will then pass the logs to the Kafka queue via log transports.
   - For any log added to the Kafka queue, there are consumers in NodeJS Express, that would be listening to the queue for the log messages, and writing them to the MongoDB.
@@ -26,5 +26,6 @@ Qlog is a cloud-based log explorer that can be effortlessly deployed on-premises
 - Streamlining the APIs and making up a decent UI.
 - Adding an authentication layer in the API.
 - Containerize the web components, and kafka and spin them up with very ease using the single `docker-compose.yaml`.
+- Performance improvements and benchmarking.
 - Documenting the code.
 - Including README for each of the component.
