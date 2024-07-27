@@ -1,27 +1,46 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>in.quallit.qlog</groupId>
-  <artifactId>logtransporter</artifactId>
-  <version>0.0.8</version>
-  <packaging>jar</packaging>
+    <groupId>in.quallit.qlog</groupId>
+    <artifactId>logtransporter</artifactId>
+    <version>0.0.9</version>
+    <packaging>jar</packaging>
 
-  <name>logtransporter</name>
-  <url>http://maven.apache.org</url>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>
+        Internal utility library for QLog, to transport the logs to required channel (Kafka).
+    </description>
+    <url>https://jigneshkhatri.github.io/qlog/</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <kafka.clients.version>3.7.1</kafka.clients.version>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
-  </properties>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
 
-  <dependencies>
-      <dependency>
-          <groupId>org.apache.kafka</groupId>
-          <artifactId>kafka-clients</artifactId>
-          <version>${kafka.clients.version}</version>
-      </dependency>
-  </dependencies>
+    <developers>
+        <developer>
+            <name>Jignesh Khatri</name>
+            <email>jignesh@quallit.com</email>
+            <organization>Quallit</organization>
+            <organizationUrl>https://quallit.in</organizationUrl>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <kafka.clients.version>3.7.1</kafka.clients.version>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka.clients.version}</version>
+        </dependency>
+    </dependencies>
 </project>

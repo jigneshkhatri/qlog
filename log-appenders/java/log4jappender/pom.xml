@@ -1,44 +1,92 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>in.quallit.qlog</groupId>
-  <artifactId>log4jappender</artifactId>
-  <version>0.0.19</version>
-  <packaging>jar</packaging>
+    <groupId>in.quallit.qlog</groupId>
+    <artifactId>log4jappender</artifactId>
+    <version>0.0.23</version>
+    <packaging>jar</packaging>
 
-  <name>log4jappender</name>
-  <url>http://maven.apache.org</url>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>
+        The custom Log4j2 appender, making use of Kafka as a transporter to transport the logs to get it streamed on the
+        UI.
+    </description>
+    <url>https://jigneshkhatri.github.io/qlog/</url>
 
-    <repositories>
-        <repository>
-            <id>central</id>
-            <url>https://repo.maven.apache.org/maven2</url>
-        </repository>
-        <repository>
-            <id>local</id>
-            <url>file://${user.home}/.m2/repository</url>
-        </repository>
-    </repositories>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <log4j.core.version>2.13.1</log4j.core.version>
-    <in.quallit.qlog.logtransporter.version>0.0.8</in.quallit.qlog.logtransporter.version>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
-  </properties>
+    <developers>
+        <developer>
+            <name>Jignesh Khatri</name>
+            <email>jignesh@quallit.com</email>
+            <organization>Quallit</organization>
+            <organizationUrl>https://quallit.in</organizationUrl>
+        </developer>
+    </developers>
 
-  <dependencies>
-    <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-core</artifactId>
-        <version>${log4j.core.version}</version>
-    </dependency>
-      <dependency>
-          <groupId>in.quallit.qlog</groupId>
-          <artifactId>logtransporter</artifactId>
-          <version>${in.quallit.qlog.logtransporter.version}</version>
-      </dependency>
-  </dependencies>
+    <scm>
+        <connection>scm:git:git://github.com/jigneshkhatri/qlog.git</connection>
+        <developerConnection>scm:git:ssh://github.com:jigneshkhatri/qlog.git</developerConnection>
+        <url>http://github.com/jigneshkhatri/qlog/tree/main/log-appenders/java/log4jappender</url>
+    </scm>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <log4j.core.version>2.13.1</log4j.core.version>
+        <in.quallit.qlog.logtransporter.version>0.0.9</in.quallit.qlog.logtransporter.version>
+        <org.apache.maven.plugins.maven-shade-plugin.version>3.6.0</org.apache.maven.plugins.maven-shade-plugin.version>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>in.quallit.qlog</groupId>
+            <artifactId>logtransporter</artifactId>
+            <version>${in.quallit.qlog.logtransporter.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>${org.apache.maven.plugins.maven-shade-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <artifactSet>
+                        <includes>
+                            <include>in.quallit.qlog:logtransporter</include>
+                        </includes>
+                    </artifactSet>
+                    <relocations>
+                        <relocation>
+                            <pattern>in.quallit.qlog.logtransporter</pattern>
+                            <shadedPattern>in.quallit.qlog.shaded.logtransporter</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
