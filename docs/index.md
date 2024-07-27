@@ -29,3 +29,4 @@ Qlog is a cloud-based log explorer that can be effortlessly deployed on-premises
 - Performance improvements and benchmarking.
 - Documenting the code.
 - Including README for each of the component.
+- Adding support of MDC for Java loggers.
