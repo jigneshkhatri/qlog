@@ -1,0 +1,14 @@
+{
+  "name": "@qlog/pino-transport",
+  "version": "0.0.1",
+  "description": "Simple kafka transport for Pino logger",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {},
+  "author": "jigneshkhatri",
+  "license": "ISC",
+  "dependencies": {
+    "logtransporter": "file:../utilities/logtransporter",
+    "pino-abstract-transport": "^1.2.0"
+  }
+}

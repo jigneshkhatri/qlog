@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
- <Configuration status="INFO" packages="in.quallit.qlog">
+ <Configuration status="INFO">
     <Properties>
         <property name="KAFKA_HOST">${bundle:application:kafka.host}</property>
         <property name="APP_NAME">${bundle:application:spring.application.name}</property>
@@ -8,7 +8,7 @@
         <Console name="LogToConsole" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"/>
         </Console>
-         <Log4jAppender name="Log4jAppender" bootstrapServers="${KAFKA_HOST}" appName="${APP_NAME}" />
+         <QLog4jAppender name="QLog4jAppender" bootstrapServers="${KAFKA_HOST}" appName="${APP_NAME}" />
     </Appenders>
 
     <Loggers>
@@ -19,7 +19,7 @@
 
         <Root level="info">
             <AppenderRef ref="LogToConsole"/>
-            <AppenderRef ref="Log4jAppender" />
+            <AppenderRef ref="QLog4jAppender" />
         </Root>
     </Loggers>
 </Configuration>

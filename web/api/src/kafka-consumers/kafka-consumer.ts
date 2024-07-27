@@ -3,6 +3,8 @@ import KafkaConfig from "../configs/kafka.config";
 import QLogKafkaTopicsRepository from "../repositories/qlog-kafka-topics.repository";
 import QLogRepository from "../repositories/qlog.repository";
 import { Response } from 'express';
+import { convertEntityToMongoData } from "utils/db-entity.util";
+import QLogKafkaTopic from "entities/qlog-kafka-topic.entity";
 
 export default class KafkaConsumer {
     

@@ -2,8 +2,8 @@
     <springProperty scope="context" name="APP_NAME" source="spring.application.name"/>
     <springProperty scope="context" name="KAFKA_HOST" source="kafka.host"/>
 
-    <appender name="LogbackAppender" class="in.quallit.qlog.logbackappender.LogbackAppender">
-        <kafkaHost>${KAFKA_HOST}</kafkaHost>
+    <appender name="QLogbackAppender" class="in.quallit.qlog.logbackappender.QLogbackAppender">
+        <bootstrapServers>${KAFKA_HOST}</bootstrapServers>
         <appName>${APP_NAME}</appName>
     </appender>
 
@@ -19,7 +19,7 @@
     </logger>
 
     <root level="info">
-        <appender-ref ref="LogbackAppender" />
+        <appender-ref ref="QLogbackAppender" />
         <appender-ref ref="STDOUT" />
     </root>
 

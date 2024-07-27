@@ -1,4 +1,6 @@
+import { convertEntityToMongoData } from "../utils/db-entity.util";
 import MongoConfig from "../configs/mongo.config";
+import QLog from "../entities/qlog.entity";
 
 export default class QLogRepository {
 
@@ -19,7 +21,11 @@ export default class QLogRepository {
 
 	public async insertLog(topicName: string, log: any): Promise<void> {
 		const collection = MongoConfig.getDatabase().collection(topicName);
-		await collection.insertOne(log);
+		log.createdOn = new Date();
+		log.logTime = new Date(log.logTime);
+		log.logCreatedAt = new Date(log.logCreatedAt);
+		const logToSave = convertEntityToMongoData(QLog, log);
+		await collection.insertOne(logToSave as any);
 	}
 
 }
