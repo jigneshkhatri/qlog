@@ -18,7 +18,7 @@ export default class QPinoTransport {
         await QLogTransporter.init(opts.bootstrapServers, opts.appName);
         const parseLine = typeof opts.parseLine === 'function' ? opts.parseLine : JSON.parse;
         return build(async (source) => {
-            source.on('data', (info) => {
+            source.on('data', async (info) => {
                 const logObj = {};
                 if (info?.err?.stack) {
                     logObj.message = info.err.stack;
@@ -28,7 +28,7 @@ export default class QPinoTransport {
                 logObj.level = QPinoTransport.#logLevels[info.level];
                 logObj.logTime = new Date(info.time);
                 logObj.logCreatedAt = new Date();
-                QLogTransporter.send(logObj);
+                await QLogTransporter.send(logObj);
             });
         }, parseLine);
     }

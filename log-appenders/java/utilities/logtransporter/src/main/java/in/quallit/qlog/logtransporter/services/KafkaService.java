@@ -1,6 +1,7 @@
 package in.quallit.qlog.logtransporter.services;
 
 import in.quallit.qlog.logtransporter.entities.QLog;
+import in.quallit.qlog.logtransporter.exceptions.ParameterValidationException;
 import in.quallit.qlog.logtransporter.serializers.QLogSerializer;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
@@ -24,11 +25,9 @@ public class KafkaService {
     private static KafkaService instance;
     private KafkaProducer<String, QLog> producer;
     private String bootstrapServers;
-    private String appName;
     private String topicName;
     private KafkaService(String bootstrapServers, String appName) {
         this.bootstrapServers = bootstrapServers;
-        this.appName = appName;
         this.topicName = "qlog-" + appName;
 
         // create topic
@@ -46,12 +45,12 @@ public class KafkaService {
 
         if (bootstrapServers == null || "".equals(bootstrapServers)) {
             // throw exception
-            throw new RuntimeException("Valid value for bootstrapServers parameter is required.");
+            throw new ParameterValidationException("Valid value for bootstrapServers parameter is required.");
         }
 
         if (appName == null || "".equals(appName)) {
             // throw exception
-            throw new RuntimeException("Valid value for appName parameter is required.");
+            throw new ParameterValidationException("Valid value for appName parameter is required.");
         }
 
         instance = new KafkaService(bootstrapServers.trim(), appName.trim());
@@ -64,15 +63,15 @@ public class KafkaService {
     private void createTopicIfRequired() {
         Properties properties = new Properties();
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, this.bootstrapServers);
-        AdminClient kafkaAdminClient = KafkaAdminClient.create(properties);
-        ListTopicsResult topics = kafkaAdminClient.listTopics();
-        try {
+        try (AdminClient kafkaAdminClient = AdminClient.create(properties)) {
+            ListTopicsResult topics = kafkaAdminClient.listTopics();
+
             Set<String> names = topics.names().get();
             if (!names.contains(this.topicName)) {
                 kafkaAdminClient.createTopics(Arrays.asList(new NewTopic(this.topicName, 1, (short) 1)));
             }
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -82,6 +81,8 @@ public class KafkaService {
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, this.bootstrapServers);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, QLogSerializer.class.getName());
+        properties.setProperty(ProducerConfig.LINGER_MS_CONFIG, "20");
+        properties.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, String.valueOf(100 * 1024));
 
         // create the producer
         producer = new KafkaProducer<>(properties);
@@ -94,7 +95,13 @@ public class KafkaService {
         try {
             this.producer.send(producerRecord).get();
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
         }
+
+    }
+
+    public void closeProducer() {
+        System.out.println("Closing producer");
+        this.producer.close();
     }
 }

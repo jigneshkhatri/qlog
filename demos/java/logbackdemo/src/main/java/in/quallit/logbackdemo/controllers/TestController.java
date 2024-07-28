@@ -10,6 +10,7 @@ import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 /**
@@ -23,20 +24,23 @@ public class TestController {
 
     @GetMapping("/exception")
     public void testException() {
-        throw new RuntimeException("This is test exception");
+        throw new RuntimeException(Thread.currentThread().getName() + " : This is test exception");
     }
 
     @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<String> testStream() {
-        return streamDummyString();
+    public Flux<Long> testStream() {
+        return streamDummyData();
     }
 
-    public Flux<String> streamDummyString() {
-        Flux<Long> interval = Flux.interval(Duration.ofSeconds(3));
-        Flux<String> events = Flux.fromStream(Stream.generate(() -> {
-            LocalDateTime localDateTime = LocalDateTime.now();
-            logger.info(localDateTime.toString());
-            return localDateTime.toString();
+    public Flux<Long> streamDummyData() {
+        Flux<Long> interval = Flux.interval(Duration.ofMillis(100));
+        AtomicLong runCount = new AtomicLong(0l);
+        Flux<Long> events = Flux.fromStream(Stream.generate(() -> {
+            for (int i=0 ; i<100 ; i++) {
+                long cnt = runCount.getAndIncrement();
+                logger.info(Thread.currentThread().getName()  + " : " + cnt);
+            }
+            return runCount.get();
         }));
         return Flux.zip(events, interval, (key, value) -> key);
     }

@@ -59,6 +59,14 @@ public final class QLogbackAppender extends AppenderBase<ILoggingEvent> {
 		this.kafkaService.sendMessage(log);
 	}
 
+	@Override
+	public void stop() {
+		super.stop();
+		if (this.kafkaService != null) {
+			this.kafkaService.closeProducer();
+		}
+	}
+
 	public String getBootstrapServers() {
 		return bootstrapServers;
 	}

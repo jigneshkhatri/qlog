@@ -4,7 +4,7 @@
 
     <groupId>in.quallit.qlog</groupId>
     <artifactId>logginghandler</artifactId>
-    <version>0.0.7</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -39,8 +39,13 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <in.quallit.qlog.logtransporter.version>0.0.9</in.quallit.qlog.logtransporter.version>
+        <in.quallit.qlog.logtransporter.version>0.0.1-SNAPSHOT</in.quallit.qlog.logtransporter.version>
         <org.apache.maven.plugins.maven-shade-plugin.version>3.6.0</org.apache.maven.plugins.maven-shade-plugin.version>
+        <org.apache.maven.plugins.maven-javadoc-plugin.version>3.8.0
+        </org.apache.maven.plugins.maven-javadoc-plugin.version>
+        <org.apache.maven.plugins.maven-source-plugin.version>3.3.1
+        </org.apache.maven.plugins.maven-source-plugin.version>
+        <org.apache.maven.plugins.maven-gpg-plugin.version>3.2.4</org.apache.maven.plugins.maven-gpg-plugin.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
@@ -81,6 +86,46 @@
                         </relocation>
                     </relocations>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${org.apache.maven.plugins.maven-javadoc-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadoc</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${org.apache.maven.plugins.maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-source</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${org.apache.maven.plugins.maven-gpg-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -65,4 +65,9 @@ public final class QLog4jAppender extends AbstractAppender {
 		this.kafkaService.sendMessage(log);
 	}
 
+	@Override
+	public void stop() {
+		super.stop();
+		this.kafkaService.closeProducer();
+	}
 }

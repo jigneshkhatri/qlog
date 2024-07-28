@@ -24,7 +24,7 @@ app.get(`/test/exception`, (req, res) => {
     }
 });
 
-app.get(`/test/stream`, (req, res) => {
+app.get(`/test/stream/:id`, (req, res) => {
     res.writeHead(200, {
         'Content-Type': "text/event-stream",
         'Cache-Control': "no-cache",
@@ -32,10 +32,12 @@ app.get(`/test/stream`, (req, res) => {
     });
     let value = 0;
     setInterval(() => {
-        const data = `data: ${JSON.stringify({count: value++})}\n\n`;
-        logger.info(data);
-        res.write(data);
-    }, 1000);
+        for (let i=0 ; i<100 ; i++) {
+            const data = `data: ${JSON.stringify({id: req.params.id, count: value++})}\n\n`;
+            logger.info(data);
+            res.write(data);
+        }
+    }, 100);
 });
 
 const port = 4004;
