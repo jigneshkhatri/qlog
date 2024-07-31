@@ -1,0 +1,13 @@
+{
+  "name": "@qlog/bunyan-stream",
+  "version": "0.0.1",
+  "description": "Simple kafka stream for Bunyan logger",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {},
+  "author": "jigneshkhatri",
+  "license": "ISC",
+  "dependencies": {
+    "logtransporter": "file:../utilities/logtransporter"
+  }
+}
