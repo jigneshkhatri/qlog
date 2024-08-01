@@ -10,7 +10,7 @@
   "author": "jigneshkhatri",
   "license": "ISC",
   "dependencies": {
-    "@qlog/winston-transport": "file:../../../log-appenders/nodejs/winston-transport",
+    "@qlog/winston-transport-stream": "file:../../../log-appenders/nodejs/winston-transport-stream",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "express": "^4.19.2",

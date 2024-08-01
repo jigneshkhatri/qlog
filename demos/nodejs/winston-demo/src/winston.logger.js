@@ -1,13 +1,18 @@
-import QWinstonTransport from '@qlog/winston-transport';
+import QWinstonTransportStream from '@qlog/winston-transport-stream';
 import winston from 'winston';
 
-const qwinstonTransport = await QWinstonTransport.init({ bootstrapServers: 'localhost:9094', appName: 'winston-demo' });
+await QWinstonTransportStream.init({ 
+  bootstrapServers: 'localhost:9094', 
+  appName: 'winston-demo' 
+});
 
 const logger = winston.createLogger({
     level: 'info',
     format: winston.format.json(),
     transports: [
-      qwinstonTransport
+      new winston.transports.Stream({
+        stream: QWinstonTransportStream.stream()
+      })
     ],
 });
 
