@@ -1,17 +1,17 @@
-import QBunyanStream from '@qlog/bunyan-stream';
+import QBunyanTransportStream from '@qlog/bunyan-transport-stream';
 import bunyan from 'bunyan';
 
-await QBunyanStream.init({
+await QBunyanTransportStream.init({
   bootstrapServers: 'localhost:9094',
   appName: 'bunyan-demo'
 });
 
 const logger = bunyan.createLogger({
-  name: 'bunyanDemo',
+  name: 'bunyan-demo',
   streams: [{
     type: 'stream',
-    stream: QBunyanStream.stream(),
-    level: 'debug'
+    stream: QBunyanTransportStream.stream(),
+    level: 'trace'
   }],
 });
 

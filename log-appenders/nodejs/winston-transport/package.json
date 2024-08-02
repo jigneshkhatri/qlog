@@ -1,0 +1,14 @@
+{
+  "name": "@qlog/winston-transport",
+  "version": "0.0.1",
+  "description": "Simple kafka transport for Winston logger",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {},
+  "author": "jigneshkhatri",
+  "license": "ISC",
+  "dependencies": {
+    "logtransporter": "file:../utilities/logtransporter",
+    "winston-transport": "^4.7.1"
+  }
+}

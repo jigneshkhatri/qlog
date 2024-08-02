@@ -1,4 +1,5 @@
 import { Kafka } from "kafkajs";
+import { Writable } from 'stream';
 
 export default class QLogTransporter {
 
@@ -33,14 +34,29 @@ export default class QLogTransporter {
             throw Error('Log transporter is not initialized yet. Call QLogTransporter.init(...) method first to initialize.');
         }
         
-        const message = logMessage.message ? logMessage.message.trim(): '';
-        logMessage.message = btoa(message);
+        logMessage.message = btoa(logMessage.message);
+        if (logMessage.errStack) {
+            logMessage.errStack = btoa(logMessage.errStack);
+        }
+
         await QLogTransporter.#kafkaProducer.send({
             topic: QLogTransporter.#topicName,
             messages: [{
                 partition: 0,
                 value: JSON.stringify(logMessage)
             }]
+        });
+    }
+
+    static stream(transformFn) {
+        return new Writable({
+            write(chunk, encoding, callback) {
+                const info = JSON.parse(chunk.toString());
+                const logObj = transformFn(info);
+                QLogTransporter.send(logObj).then(() => {
+                    callback();
+                });
+            },
         });
     }
 

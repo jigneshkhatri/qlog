@@ -10,7 +10,7 @@
   "author": "jigneshkhatri",
   "license": "ISC",
   "dependencies": {
-    "@qlog/bunyan-stream": "file:../../../log-appenders/nodejs/bunyan-stream",
+    "@qlog/bunyan-transport-stream": "file:../../../log-appenders/nodejs/bunyan-transport-stream",
     "body-parser": "^1.20.2",
     "bunyan": "^1.8.15",
     "cors": "^2.8.5",

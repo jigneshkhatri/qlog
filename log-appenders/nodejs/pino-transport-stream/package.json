@@ -1,5 +1,5 @@
 {
-  "name": "@qlog/pino-transport",
+  "name": "@qlog/pino-transport-stream",
   "version": "0.0.1",
   "description": "Simple kafka transport for Pino logger",
   "main": "src/index.js",
@@ -8,7 +8,6 @@
   "author": "jigneshkhatri",
   "license": "ISC",
   "dependencies": {
-    "logtransporter": "file:../utilities/logtransporter",
-    "pino-abstract-transport": "^1.2.0"
+    "logtransporter": "file:../utilities/logtransporter"
   }
 }

@@ -20,8 +20,42 @@ app.get(`/test/exception`, (req, res) => {
         throw Error('There is an error');
     } catch(e) {
         logger.error(e);
+        logger.error(e, 'Error occurred');
+        logger.error('Error occurred');
         res.sendStatus(500);
     }
+});
+
+app.get(`/test/all/:id`, (req, res) => {
+    logger.debug('A simple debug message');
+    logger.debug('A simple debug message with argument [id=%d]', req.params.id);
+    logger.debug({
+        id: req.params.id,
+        customParam: 'This is a custom parameter'
+    });
+
+    logger.info('A simple info message');
+    logger.info('A simple info message with argument [id=%d]', req.params.id);
+    logger.info({
+        id: req.params.id,
+        customParam: 'This is a custom parameter'
+    });
+
+    logger.warn('A simple warning message');
+    logger.warn('A simple warning message with argument [id=%d]', req.params.id);
+    logger.warn({
+        id: req.params.id,
+        customParam: 'This is a custom parameter'
+    });
+
+    logger.error('A simple error message');
+    logger.error('A simple error message with argument [id=%d]', req.params.id);
+    logger.error({
+        id: req.params.id,
+        customParam: 'This is a custom parameter'
+    });
+
+    res.sendStatus(200);
 });
 
 app.get(`/test/stream/:id`, (req, res) => {

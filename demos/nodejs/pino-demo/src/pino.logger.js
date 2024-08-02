@@ -1,11 +1,15 @@
-import QPinoTransport from '@qlog/pino-transport';
+import QPinoTransportStream from '@qlog/pino-transport';
 import pino from 'pino';
 
-const qPinoTransport = await QPinoTransport.init({
+await QPinoTransportStream.init({
   bootstrapServers: 'localhost:9094',
   appName: 'pino-demo'
 });
 
-const logger = pino(qPinoTransport);
+pino
+const logger = pino({
+  name: 'pino-demo',
+  level: 'trace',
+}, QPinoTransportStream.stream());
 
 export default logger;
