@@ -34,11 +34,12 @@ public final class QLoggingHandler extends Handler {
 	@Override
 	public void publish(LogRecord logEvent) {
 		String message = logEvent.getMessage();
+		String errStack = null;
 		if (logEvent.getThrown() != null) {
 			StringWriter sw = new StringWriter();
 			PrintWriter pw = new PrintWriter(sw);
 			logEvent.getThrown().printStackTrace(pw);
-			message = sw.toString(); // stack trace as a string
+			errStack = sw.toString(); // stack trace as a string
 		}
 
 		final QLog log = new QLog();
@@ -48,6 +49,7 @@ public final class QLoggingHandler extends Handler {
 		log.setClassName(logEvent.getSourceClassName());
 		log.setMethodName(logEvent.getSourceMethodName());
 		log.setMessage(message);
+		log.setMessage(errStack);
 		log.setLogCreatedAt(Instant.now());
 		this.kafkaService.sendMessage(log);
 	}

@@ -42,7 +42,6 @@ export class AppComponent implements OnInit {
   handleSuccessResponse(response: any) {
     console.log(response);
     const logObj = JSON.parse(response.data);
-    logObj.message = atob(logObj.message);
     this.logs = [...this.logs, logObj];
   }
   handleErrorResponse(error: any) {

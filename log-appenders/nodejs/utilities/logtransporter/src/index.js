@@ -1,5 +1,6 @@
 import { Kafka } from "kafkajs";
 import { Writable } from 'stream';
+import { escapeString } from "./utils/utility.js";
 
 export default class QLogTransporter {
 
@@ -34,9 +35,9 @@ export default class QLogTransporter {
             throw Error('Log transporter is not initialized yet. Call QLogTransporter.init(...) method first to initialize.');
         }
         
-        logMessage.message = btoa(logMessage.message);
+        logMessage.message = escapeString(logMessage.message);
         if (logMessage.errStack) {
-            logMessage.errStack = btoa(logMessage.errStack);
+            logMessage.errStack = escapeString(logMessage.errStack);
         }
 
         await QLogTransporter.#kafkaProducer.send({

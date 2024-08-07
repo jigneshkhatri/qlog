@@ -41,12 +41,13 @@ public final class QLog4jAppender extends AbstractAppender {
 		String methodName = logEvent.getSource().getMethodName();
 		Integer lineNumber = logEvent.getSource().getLineNumber();
 
+		String errStack = null;
 		if (logEvent.getThrown() != null) {
 			Throwable thrown = logEvent.getThrown();
 			StringWriter sw = new StringWriter();
 			PrintWriter pw = new PrintWriter(sw);
 			thrown.printStackTrace(pw);
-			message = sw.toString(); // stack trace as a string
+			errStack = sw.toString(); // stack trace as a string
 
 			className = thrown.getStackTrace()[0].getClassName();
 			methodName = thrown.getStackTrace()[0].getMethodName();
@@ -61,6 +62,7 @@ public final class QLog4jAppender extends AbstractAppender {
 		log.setMethodName(methodName);
 		log.setLineNumber(lineNumber);
 		log.setMessage(message);
+		log.setErrStack(errStack);
 		log.setLogCreatedAt(Instant.now());
 		this.kafkaService.sendMessage(log);
 	}

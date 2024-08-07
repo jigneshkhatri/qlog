@@ -86,7 +86,7 @@ export default class KafkaConsumer {
 
         const consumer = KafkaConfig.getClient().consumer({ groupId });
         await consumer.connect();
-        await consumer.subscribe({ topics: [topicName], fromBeginning: startOffset < 0 });
+        await consumer.subscribe({ topics: [topicName], fromBeginning: true });
         consumer.run({
             autoCommit: false,
             eachMessage: async ({ topic, partition, message, heartbeat, pause }) => {

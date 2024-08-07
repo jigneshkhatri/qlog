@@ -1,10 +1,9 @@
 package in.quallit.qlog.logtransporter.entities;
 
+import in.quallit.qlog.logtransporter.utils.Utility;
+
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.time.temporal.ChronoField;
-import java.util.Base64;
 
 /**
  * <p>The DTO class for the logs added by multiple log appenders to transport them to the required transport channels.</p>
@@ -28,6 +27,8 @@ public class QLog implements Serializable {
 	 * <p>The actual log message.</p>
 	 */
 	private String message;
+
+	private String errStack;
 
 	/**
 	 * <p>Name of the logger configured in logger configuration of the application.</p>
@@ -78,6 +79,14 @@ public class QLog implements Serializable {
 		this.message = message;
 	}
 
+	public String getErrStack() {
+		return errStack;
+	}
+
+	public void setErrStack(String errStack) {
+		this.errStack = errStack;
+	}
+
 	public String getLoggerName() {
 		return loggerName;
 	}
@@ -120,11 +129,6 @@ public class QLog implements Serializable {
 
 	@Override
 	public String toString() {
-		String localMessage = "";
-		if (this.message != null) {
-			localMessage = this.message.trim();
-		}
-
 		String localLogTime = null;
 		if (this.logTime != null) {
 			localLogTime = this.logTime.toString();
@@ -139,7 +143,10 @@ public class QLog implements Serializable {
 		stringBuilder.append("{");
 		stringBuilder.append("\"level\":\"").append(this.level).append("\"");
 		stringBuilder.append(",\"logTime\":\"").append(localLogTime).append("\"");
-		stringBuilder.append(",\"message\":\"").append(Base64.getEncoder().encodeToString(localMessage.getBytes(StandardCharsets.UTF_8))).append("\"");
+		stringBuilder.append(",\"message\":\"").append(Utility.escapeString(this.message)).append("\"");
+		if (this.errStack != null) {
+			stringBuilder.append(",\"errStack\":\"").append(Utility.escapeString(this.errStack)).append("\"");
+		}
 		stringBuilder.append(",\"loggerName\":\"").append(this.loggerName).append("\"");
 		stringBuilder.append(",\"className\":\"").append(this.className).append("\"");
 		stringBuilder.append(",\"methodName\":\"").append(this.methodName).append("\"");

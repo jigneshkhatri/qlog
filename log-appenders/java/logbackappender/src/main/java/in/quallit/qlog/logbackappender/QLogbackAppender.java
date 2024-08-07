@@ -32,6 +32,7 @@ public final class QLogbackAppender extends AppenderBase<ILoggingEvent> {
 		String methodName = logEvent.getCallerData()[0].getMethodName();
 		Integer lineNumber = logEvent.getCallerData()[0].getLineNumber();
 
+		String errStack = null;
 		IThrowableProxy proxy = logEvent.getThrowableProxy();
 		if (proxy != null) {
 			StringBuilder exceptionStackTrace = new StringBuilder();
@@ -40,7 +41,7 @@ public final class QLogbackAppender extends AppenderBase<ILoggingEvent> {
 			converter.start();
 			exceptionStackTrace.append(converter.convert(logEvent));
 			exceptionStackTrace.append(CoreConstants.LINE_SEPARATOR);
-			message = exceptionStackTrace.toString();
+			errStack = exceptionStackTrace.toString();
 
 			className = proxy.getStackTraceElementProxyArray()[0].getStackTraceElement().getClassName();
 			methodName = proxy.getStackTraceElementProxyArray()[0].getStackTraceElement().getMethodName();
@@ -55,6 +56,7 @@ public final class QLogbackAppender extends AppenderBase<ILoggingEvent> {
 		log.setMethodName(methodName);
 		log.setLineNumber(lineNumber);
 		log.setMessage(message);
+		log.setErrStack(errStack);
 		log.setLogCreatedAt(Instant.now());
 		this.kafkaService.sendMessage(log);
 	}

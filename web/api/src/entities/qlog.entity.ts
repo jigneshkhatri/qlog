@@ -8,6 +8,8 @@ export default class QLog extends CommonMongoEntity {
 
     @dbField('message')
 	public message!: string;
+    @dbField('errStack')
+	public errStack!: string;
 
     @dbField('logger_name')
 	public loggerName!: string;
