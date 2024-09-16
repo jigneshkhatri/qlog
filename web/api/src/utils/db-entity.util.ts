@@ -118,7 +118,9 @@ const convertSingleMongoDocumentToEntity = <T extends CommonMongoEntity>(
 		const fieldType = getFieldType(entity, property);
 		const isMappedEntity = isFieldMappedEntity(entity, property);
 
-		if (!isMappedEntity) {
+		if (dbFieldName === '_id') {
+			entity[property as keyof T] = dbResult[dbFieldName].toString();
+		} else if (!isMappedEntity) {
 			entity[property as keyof T] = dbResult[dbFieldName];
 		} else if (isMappedEntity && fieldType && !entity[property as keyof T]) {
 			entity[property as keyof T] = convertMongoDataToEntity(

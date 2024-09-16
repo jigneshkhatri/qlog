@@ -7,6 +7,9 @@ import MongoConfig from './configs/mongo.config';
 import KafkaConfig from './configs/kafka.config';
 import { newTopicSubscriptionScheduler } from './schedulers/kafka-consumer.scheduler';
 import KafkaConsumer from './kafka-consumers/kafka-consumer';
+import QLogController from './controllers/qlog.controller';
+import allQLogAppsRouter from './routes/all-qlog-apps.route';
+import qLogRouter from './routes/qlog.route';
 
 // initialize express app
 const app: Express = express();
@@ -24,25 +27,21 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get(`/qlog/:appName`, (req: Request, res: Response) => {
-	const appName = req.params.appName
-    res.writeHead(200, {
-        'Content-Type': "text/event-stream",
-        'Cache-Control': "no-cache",
-        'Connection': "keep-alive"
-    });
-    // let value = 0;
-    // setInterval(() => {
-    //     res.write(`data: ${JSON.stringify({count: value++})}\n\n`);
-    // }, 1000);
-    // repo.findAll((data: any) => {
-    //     res.write(`data: ${JSON.stringify(data)}\n\n`);
-    // });
-	KafkaConsumer.getInstance().streamMessage(appName, res);
-});
+// app.get(`/qlog/:kafkaTopicName`, (req: Request, res: Response) => {
+// 	const kafkaTopicName = req.params.kafkaTopicName
+//     res.writeHead(200, {
+//         'Content-Type': "text/event-stream",
+//         'Cache-Control': "no-cache",
+//         'Connection': "keep-alive"
+//     });
+// 	KafkaConsumer.getInstance().streamMessage(kafkaTopicName, res);
+// });
+
+app.use('/qlog-apps', allQLogAppsRouter);
+app.use('/qlog', qLogRouter);
 
 console.log('Active environment [%s]', getEnvironment());
-const connectors = [MongoConfig.connect(), KafkaConfig.connectConsumer()];
+const connectors = [MongoConfig.connect(getEnvValue(EnvKeys.mongoConStr) as string), KafkaConfig.connectConsumer()];
 Promise.all(connectors).then(() => {
     app.listen(port, () => {
         console.log('Application is initialized. Server is running at [http://localhost:%s]', port);

@@ -6,7 +6,6 @@ import path from 'path';
 const defaultEnv = 'environments/.env';
 const devEnv = 'environments/.env.dev';
 const testEnv = 'environments/.env.test';
-const prodEnv = 'environments/.env.prod';
 // Define all the environment files - End
 
 // Ensure a .env file exists
@@ -21,8 +20,6 @@ const getEnvFile = (environment: string): string => {
 			return devEnv;
 		case 'test':
 			return testEnv;
-		case 'prod':
-			return prodEnv;
 		default:
 			return defaultEnv;
 	}
@@ -30,13 +27,16 @@ const getEnvFile = (environment: string): string => {
 
 // Get the current environment.
 export const getEnvironment = (): string => {
-	return getEnvValue('NODE_ENV');
+	return getEnvValue('NODE_ENV', 'dev');
 };
 
 // Get a value from the .env.* file
-export const getEnvValue = (variable: string): string => {
+export const getEnvValue = (variable: string, defaultValue?: any): string => {
 	const val = process.env[variable];
 	if (!val) {
+		if (defaultValue) {
+			return defaultValue;
+		}
 		throw new Error(
 			`Tried to access [${variable}] environment variable, but that does not exist in [${getEnvironment()}] environment`
 		);

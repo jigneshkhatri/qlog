@@ -4,7 +4,6 @@ import in.quallit.qlog.logtransporter.entities.QLog;
 import in.quallit.qlog.logtransporter.exceptions.ParameterValidationException;
 import in.quallit.qlog.logtransporter.serializers.QLogSerializer;
 import org.apache.kafka.clients.admin.AdminClient;
-import org.apache.kafka.clients.admin.KafkaAdminClient;
 import org.apache.kafka.clients.admin.ListTopicsResult;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -16,6 +15,7 @@ import java.util.Arrays;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
 
 /**
  * @author Jigs
@@ -26,6 +26,7 @@ public class KafkaService {
     private KafkaProducer<String, QLog> producer;
     private String bootstrapServers;
     private String topicName;
+    private static final Pattern APP_NAME_REGEX = Pattern.compile("[A-Za-z-]{1,15}");
     private KafkaService(String bootstrapServers, String appName) {
         this.bootstrapServers = bootstrapServers;
         this.topicName = "qlog-" + appName;
@@ -48,9 +49,9 @@ public class KafkaService {
             throw new ParameterValidationException("Valid value for bootstrapServers parameter is required.");
         }
 
-        if (appName == null || "".equals(appName)) {
+        if (appName == null || "".equals(appName) || !APP_NAME_REGEX.matcher(appName).matches()) {
             // throw exception
-            throw new ParameterValidationException("Valid value for appName parameter is required.");
+            throw new ParameterValidationException("Valid value for appName parameter is required. appName should only contain alphabets and hyphen (-) and should be of max 15 characters long.");
         }
 
         instance = new KafkaService(bootstrapServers.trim(), appName.trim());
@@ -101,7 +102,6 @@ public class KafkaService {
     }
 
     public void closeProducer() {
-        System.out.println("Closing producer");
         this.producer.close();
     }
 }

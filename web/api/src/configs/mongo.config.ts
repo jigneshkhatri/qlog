@@ -16,8 +16,8 @@ export default class MongoConfig {
 	 * This method will only be called during application startup,
 	 * thus there will be only one Mongo client for application.
 	 */
-	private static _init(): void {
-		MongoConfig._client = new MongoClient(getEnvValue(EnvKeys.mongoConStr) as string);
+	private static _init(mongoConStr: string): void {
+		MongoConfig._client = new MongoClient(mongoConStr);
 		console.log('MongoDB client initialized');
 	}
 
@@ -25,7 +25,7 @@ export default class MongoConfig {
 	 *
 	 * @returns Singleton instance of `MongoClient`
 	 */
-	private static _getClient(): MongoClient {
+	public static getClient(): MongoClient {
 		return MongoConfig._client;
 	}
 
@@ -37,7 +37,7 @@ export default class MongoConfig {
 		// Check if database is not already initialized, then initialize it first
 		if (!MongoConfig._db) {
 			const dbName = getEnvValue(EnvKeys.mongoDbName) as string;
-			MongoConfig._db = this._getClient().db(dbName);
+			MongoConfig._db = this.getClient().db(dbName);
 			console.log('MongoDB database [%s] initialized', dbName);
 		}
 		return MongoConfig._db;
@@ -47,9 +47,9 @@ export default class MongoConfig {
 	 * This method should be called to initialize and connect to
 	 * database on startup (before starting the server)
 	 */
-	public static async connect(): Promise<void> {
-		this._init();
-		await this._getClient().connect();
+	public static async connect(mongoConStr: string): Promise<void> {
+		this._init(mongoConStr);
+		await this.getClient().connect();
 		this.getDatabase().listCollections();
 		console.log('MongoDB connected');
 	}
@@ -59,7 +59,7 @@ export default class MongoConfig {
 	 * database connection and shutdown gracefully
 	 */
 	public static async disconnect(): Promise<void> {
-		await this._getClient().close();
+		await this.getClient().close();
 		console.log('MongoDB disconnected');
 	}
 }

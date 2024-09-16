@@ -9,4 +9,8 @@ export class EnvKeys {
 	public static readonly mongoDbName = 'MONGO_DB';
 	public static readonly kafkaClientId = 'KAFKA_CLIENT_ID';
 	public static readonly kafkaBrokers = 'KAFKA_BROKERS';
+	public static readonly thresholdDaysToArchiveLogs = 'THRESHOLD_DAYS_TO_ARCHIVE_LOGS';
+	public static readonly thresholdDaysToPurgeArchivedLogs = 'THRESHOLD_DAYS_TO_PURGE_ARCHIVED_LOGS';
+	public static readonly logLevel = 'LOG_LEVEL';
+	public static readonly logTransports = 'LOG_TRANSPORTS';
 }

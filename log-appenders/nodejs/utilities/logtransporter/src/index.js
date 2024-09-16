@@ -6,6 +6,7 @@ export default class QLogTransporter {
 
     static #topicName;
     static #kafkaProducer;
+    static #appNameRegex = /[A-Za-z-]{1,15}/;
     constructor() {
         throw Error('Cannot instantiate this class');
     }
@@ -57,21 +58,22 @@ export default class QLogTransporter {
                 QLogTransporter.send(logObj).then(() => {
                     callback();
                 });
-            },
+            }
         });
     }
 
     static #validateAndClean(bootstrapServers, appName) {
+        bootstrapServers = bootstrapServers?.trim();
+        appName = appName?.trim();
+
         if (!bootstrapServers) {
             throw Error('Valid value for bootstrapServers parameter is required.');
         }
 
-        if (!appName) {
-            throw Error('Valid value for appName parameter is required.');
+        if (!appName || !this.#appNameRegex.test(appName)) {
+            throw Error('Valid value for appName parameter is required. appName should only contain alphabets and hyphen (-) and should be of max 15 characters long.');
         }
 
-        bootstrapServers = bootstrapServers.trim();
-        appName = appName.trim();
         return { bootstrapServers, appName };
     }
 }

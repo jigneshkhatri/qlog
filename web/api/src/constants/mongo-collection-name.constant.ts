@@ -3,5 +3,5 @@
  * Then, it should be used wherever required in the code.
  */
 export default class MongoCollectionName {
-	public static readonly qlogKafkaTopics = 'qlogKafkaTopics';
+	public static readonly allQLogApps = 'all-qlog-apps';
 }

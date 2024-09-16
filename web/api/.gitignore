@@ -14,3 +14,4 @@ package-lock.json
 dist/
 *.log
 .*-audit.json
+coverage/

@@ -51,7 +51,7 @@ export default abstract class CommonMongoRepository<T extends CommonMongoEntity>
 		paginationParams?: PaginationParams,
 		projections?: { [key: string]: number }
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	): Promise<T | T[] | undefined> {
+	): Promise<T[] | undefined> {
 		let results;
 		if (!projections) {
 			projections = {};
@@ -71,7 +71,7 @@ export default abstract class CommonMongoRepository<T extends CommonMongoEntity>
 		} else {
 			results = this.collection.find(filter).project(projections);
 		}
-		return convertMongoDataToEntity(await results.toArray(), this._entityType);
+		return convertMongoDataToEntity(await results.toArray(), this._entityType) as T[] | undefined;
 	}
 
 	public async insert(object: T | T[]): Promise<string | string[]> {
